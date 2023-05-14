@@ -92,11 +92,11 @@ export const Header = ({
       <LogoWrapper>
         <Title>delegators.xyz</Title>
       </LogoWrapper>
-      <Link href="/dispute" target="_blank">
-        <ButtonText> dispute </ButtonText>
-      </Link>
       <Link href="/report" target="_blank">
         <ButtonText> report </ButtonText>
+      </Link>
+      <Link href="/dispute" target="_blank">
+        <ButtonText> dispute </ButtonText>
       </Link>
       <Link href="/out" target="_blank">
         <ButtonText> stepping out </ButtonText>

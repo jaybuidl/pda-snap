@@ -111,7 +111,6 @@ const Dispute = () => {
         )}
       </CardContainer>
       <Notice>
-        <p>Dispute:</p>
         <p> Reporter tx address:</p>
         <Input
           placeholder={reporterAddress}

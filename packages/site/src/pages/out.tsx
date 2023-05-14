@@ -1,19 +1,8 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
+import { Button, Input } from 'antd';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
-import {
-  connectSnap,
-  getSnap,
-  sendHello,
-  shouldDisplayReconnectButton,
-} from '../utils';
-import {
-  ConnectButton,
-  InstallFlaskButton,
-  ReconnectButton,
-  SendHelloButton,
-  Card,
-} from '../components';
+import { connectSnap, getSnap, sendHello } from '../utils';
 
 const Container = styled.div`
   display: flex;
@@ -100,6 +89,10 @@ const ErrorMessage = styled.div`
 `;
 
 const Out = () => {
+  const [daoAddress, setDaoAddress] = useState("0x...");
+  const [delegateAddress, setDelegateAddress] = useState("0x... or .eth or .lens");
+  const [message, setMessage] = useState("I want to signal that I am stepping down from participating in this DAO governance. blahblahblah");
+  const { TextArea } = Input;
   const [state, dispatch] = useContext(MetaMaskContext);
 
   const handleConnectClick = async () => {
@@ -131,86 +124,50 @@ const Out = () => {
       <Heading>
         let's <Span>step out</Span>
       </Heading>
-      <Subtitle>
-        Get started by editing <code>src/index.ts</code>
-      </Subtitle>
+      <Subtitle>for reporting a delegate, it's here.</Subtitle>
       <CardContainer>
         {state.error && (
           <ErrorMessage>
             <b>An error happened:</b> {state.error.message}
           </ErrorMessage>
         )}
-        {!state.isFlask && (
-          <Card
-            content={{
-              title: 'Install',
-              description:
-                'Snaps is pre-release software only available in MetaMask Flask, a canary distribution for developers with access to upcoming features.',
-              button: <InstallFlaskButton />,
-            }}
-            fullWidth
-          />
-        )}
-        {!state.installedSnap && (
-          <Card
-            content={{
-              title: 'Connect',
-              description:
-                'Get started by connecting to and installing the example snap.',
-              button: (
-                <ConnectButton
-                  onClick={handleConnectClick}
-                  disabled={!state.isFlask}
-                />
-              ),
-            }}
-            disabled={!state.isFlask}
-          />
-        )}
-        {shouldDisplayReconnectButton(state.installedSnap) && (
-          <Card
-            content={{
-              title: 'Reconnect',
-              description:
-                'While connected to a local running snap this button will always be displayed in order to update the snap if a change is made.',
-              button: (
-                <ReconnectButton
-                  onClick={handleConnectClick}
-                  disabled={!state.installedSnap}
-                />
-              ),
-            }}
-            disabled={!state.installedSnap}
-          />
-        )}
-        <Card
-          content={{
-            title: 'Send Hello message',
-            description:
-              'Display a custom message within a confirmation screen in MetaMask.',
-            button: (
-              <SendHelloButton
-                onClick={handleSendHelloClick}
-                disabled={!state.installedSnap}
-              />
-            ),
-          }}
-          disabled={!state.installedSnap}
-          fullWidth={
-            state.isFlask &&
-            Boolean(state.installedSnap) &&
-            !shouldDisplayReconnectButton(state.installedSnap)
-          }
-        />
-        <Notice>
-          <p>
-            Please note that the <b>snap.manifest.json</b> and{' '}
-            <b>package.json</b> must be located in the server root directory and
-            the bundle must be hosted at the location specified by the location
-            field.
-          </p>
-        </Notice>
       </CardContainer>
+      <Notice>
+        <p>Dao address of the reported address:</p>
+        <Input
+          placeholder={daoAddress}
+          onChange={(e) => {
+            setDaoAddress(e.target.value);
+          }}
+        />
+        <p> Reported Address: :</p>
+        <div style={{ margin: 8 }}>
+          <Input
+            placeholder={delegateAddress}
+            onChange={(e) => {
+              setDelegateAddress(e.target.value);
+            }}
+          />
+
+          <p> Put a message with your report : </p>
+          <TextArea
+            placeholder={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+            }}
+          />
+          <Button
+            style={{ marginTop: 8 }}
+            onClick={async () => {
+              /* look how you call setPurpose on your contract: */
+              /* notice how you pass a call back for tx updates too */
+              console.log(reporterAddress);
+            }}
+          >
+            Report
+          </Button>
+        </div>
+      </Notice>
     </Container>
   );
 };
